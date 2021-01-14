@@ -22,17 +22,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// nsCmd represents the ns command
-var nsCmd = &cobra.Command{
-	Use:   "ns",
-	Short: "Looks up the name servers for a particular host",
+// mxCmd represents the mx command
+var mxCmd = &cobra.Command{
+	Use:   "mx",
+	Short: "Looks up the MX for a particular host",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		host := cmd.Flag("host").Value.String()
-		if ns, err := net.LookupNS(host); err != nil {
+		if mx, err := net.LookupMX(host); err != nil {
 			return err
 		} else {
-			for _, n := range ns {
-				fmt.Println(n.Host)
+			for _, m := range mx {
+				fmt.Println(m.Host, m.Pref)
 			}
 		}
 
@@ -41,15 +41,16 @@ var nsCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(nsCmd)
+	rootCmd.AddCommand(mxCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// nsCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// mxCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	nsCmd.Flags().String("host", "seancheng.space", "Particular host")
+	// mxCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	mxCmd.Flags().String("host", "seancheng.space", "Particular host")
 }

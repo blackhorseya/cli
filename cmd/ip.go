@@ -22,17 +22,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// nsCmd represents the ns command
-var nsCmd = &cobra.Command{
-	Use:   "ns",
-	Short: "Looks up the name servers for a particular host",
+// ipCmd represents the ip command
+var ipCmd = &cobra.Command{
+	Use:   "ip",
+	Short: "Looks up then IP addresses for a particular host",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		host := cmd.Flag("host").Value.String()
-		if ns, err := net.LookupNS(host); err != nil {
+		if ips, err := net.LookupIP(host); err != nil {
 			return err
 		} else {
-			for _, n := range ns {
-				fmt.Println(n.Host)
+			for _, ip := range ips {
+				fmt.Println(ip)
 			}
 		}
 
@@ -41,15 +41,16 @@ var nsCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(nsCmd)
+	rootCmd.AddCommand(ipCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// nsCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// ipCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	nsCmd.Flags().String("host", "seancheng.space", "Particular host")
+	// ipCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	ipCmd.Flags().String("host", "seancheng.space", "Particular host")
 }
